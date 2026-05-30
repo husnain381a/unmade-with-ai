@@ -112,7 +112,7 @@ export default function App() {
   const hasFiles = files.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#0c0c0e] text-white font-sans">
+    <div className="min-h-screen bg-[#0c0c0e] text-white font-sans overflow-x-hidden">
       {/* Background texture */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.03)_0%,_transparent_60%)] pointer-events-none" />
 
@@ -268,24 +268,23 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-white/[0.05] mt-12">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between text-xs text-white/25">
-          <div>
-            <div className="text-white/50">Unmade with AI</div>
-            <div className="text-white/30 text-[11px]">Removes C2PA · Local only · Open image standards</div>
+        <div className="max-w-5xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-2 text-xs text-white/25">
+          <div className="text-center sm:text-left">
+            <div className="text-white/70">Unmade with AI</div>
+            <div className="text-white/50 text-[11px]">Removes C2PA · Local only · Open image standards</div>
           </div>
-          <div className="text-right">
+          <div className="text-center sm:text-right">
             <div className="text-white/30">
-            <span>Developed by </span>
               <a
                 href="https://husnainmazhar.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/50 hover:text-white transition-colors"
+                className="text-white/70 hover:underline"
               >
-              Husnain Mazhar
+                Developed by Husnain Mazhar
               </a>
             </div>
-            <div className="text-white/30 text-[11px]">Built with care · © {new Date().getFullYear()}</div>
+            <div className="text-white/50 text-[11px]">Built with care · © {new Date().getFullYear()}</div>
           </div>
         </div>
       </footer>
