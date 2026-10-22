@@ -1,0 +1,31 @@
+{
+  "name": "Unmade with AI — Remove C2PA Metadata",
+  "short_name": "Unmade",
+  "description": "Remove C2PA / Content Credentials provenance metadata from JPEG, PNG and WebP images entirely in your browser. No uploads.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c0c0e",
+  "theme_color": "#0c0c0e",
+  "categories": ["utilities", "productivity", "photo"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "167x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Remove C2PA metadata",
+      "short_name": "Remove",
+      "url": "/#tool",
+      "description": "Drop an image and strip its AI provenance manifest."
+    }
+  ]
+}

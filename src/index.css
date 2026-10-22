@@ -1,3 +1,109 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── No-JavaScript fallback ───────────────────────────────────────────────
+   Rendered from index.html so crawlers and answer engines that do not run
+   JavaScript still get the full, readable content of the page.            */
+
+.noscript-fallback {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  color: #e6e6e8;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+
+.noscript-fallback h1 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+.noscript-fallback h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 2.5rem 0 0.75rem;
+}
+
+.noscript-fallback h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.35rem;
+  color: #e6e6e8;
+}
+
+.noscript-fallback p {
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+}
+
+.noscript-fallback strong {
+  color: #e6e6e8;
+}
+
+.noscript-fallback ol,
+.noscript-fallback ul {
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  padding-left: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.noscript-fallback li {
+  margin-bottom: 0.85rem;
+}
+
+.noscript-fallback li p {
+  margin: 0;
+}
+
+.noscript-fallback dl {
+  margin: 0 0 1rem;
+}
+
+.noscript-fallback dl > div {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.9rem 0;
+}
+
+.noscript-fallback dl > div:last-child {
+  border-bottom: 0;
+}
+
+.noscript-fallback dt {
+  margin: 0 0 0.4rem;
+}
+
+.noscript-fallback dd {
+  margin: 0;
+  color: #a1a1aa;
+  font-size: 0.95rem;
+}
+
+.noscript-fallback table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.noscript-fallback th,
+.noscript-fallback td {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.noscript-fallback thead th {
+  background: rgba(255, 255, 255, 0.04);
+  color: #d4d4d8;
+}
