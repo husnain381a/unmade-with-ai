@@ -9,6 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/husnain381a/unmade-with-ai/actions/workflows/ci.yml"><img src="https://github.com/husnain381a/unmade-with-ai/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-25241f" alt="MIT license" /></a>
   <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18-25241f?logo=react&logoColor=eeeae2" alt="React 18" /></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5-25241f?logo=typescript&logoColor=eeeae2" alt="TypeScript 5" /></a>
 </p>
@@ -128,4 +129,4 @@ Created by [Husnain Mazhar](https://husnainmazhar.com).
 
 Built with [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vite.dev/), [Tailwind CSS](https://tailwindcss.com/), and [Lucide](https://lucide.dev/). Typography uses [Switzer by Fontshare](https://www.fontshare.com/fonts/switzer); font binaries are not redistributed in this repository. See the [font notes](public/fonts/README.md) and included [third-party font license](public/fonts/Switzer-FFL.txt).
 
-A project-wide license has not been added. Third-party assets and dependencies retain their respective licenses.
+Released under the [MIT License](LICENSE). Third-party assets and dependencies retain their respective licenses.
