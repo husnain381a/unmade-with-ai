@@ -14,8 +14,8 @@ export const SITE = {
   lang: 'en',
   themeColor: '#0c0c0e',
   ogImage: '/favicon.png',
-  ogImageWidth: 167,
-  ogImageHeight: 180,
+  ogImageWidth: 512,
+  ogImageHeight: 512,
   /** Google Search Console HTML-file verification token. */
   gscVerification: 'google38bdc06669cee5fe.html',
   author: {
@@ -164,8 +164,8 @@ export function buildJsonLd(): Record<string, unknown> {
       logo: {
         '@type': 'ImageObject',
         url: `${url}/favicon.png`,
-        width: 167,
-        height: 180,
+        width: SITE.ogImageWidth,
+        height: SITE.ogImageHeight,
       },
       founder: { '@id': `${url}/#founder` },
     },

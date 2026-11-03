@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-labelledby="icon-title">
+  <title id="icon-title">Unmade with AI</title>
+  <style>
+    /* Hallmark · component: favicon · genre: modern-minimal · theme: Rim · v2.0.0 */
+    :root { --color-brand-ink: oklch(94% 0.010 80); --color-brand-paper: oklch(14.5% 0.008 75); }
+    rect { fill: var(--color-brand-paper); }
+    path { fill: var(--color-brand-ink); }
+  </style>
+  <rect width="32" height="32" />
+  <path d="M4 4h6v18h12v-8h6v14H4Z" />
+  <path d="M22 4h6v6h-6Z" />
+</svg>

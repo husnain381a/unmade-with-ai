@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import {
-  ShieldOff,
   Upload,
   ImageOff,
   CheckCircle2,
@@ -11,10 +10,11 @@ import {
   Lock,
   ChevronRight,
   FileImage,
-  HelpCircle,
+  Plus,
+  ChevronDown,
 } from 'lucide-react';
 import { removeC2PA, formatBytes, type RemovalResult } from './utils/c2pa-remover';
-import { SITE, FAQS, HOWTO_STEPS, FORMATS, TOOLS, WHAT_IS_C2PA, H1, H1_ACCENT } from './content/site';
+import { SITE, FAQS, HOWTO_STEPS, FORMATS, TOOLS, WHAT_IS_C2PA, H1 } from './content/site';
 
 type FileStatus = 'idle' | 'processing' | 'done' | 'error' | 'clean';
 
@@ -118,294 +118,220 @@ export default function App() {
   const hasFiles = files.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#0c0c0e] text-white font-sans overflow-x-hidden">
-      {/* Background texture */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.03)_0%,_transparent_60%)] pointer-events-none" />
-
-      {/* Header */}
-      <header className="relative border-b border-white/[0.06] bg-[#0c0c0e]/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400/30 via-cyan-300/20 to-rose-400/20 flex items-center justify-center backdrop-blur-sm">
-              <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center">
-                <ShieldOff className="w-4 h-4 text-white" />
-              </div>
-            </div>
-            <div>
-              <div className="font-semibold tracking-tight text-white leading-tight">Unmade with AI</div>
-              <div className="text-[11px] text-white/40 -mt-0.5">Strip C2PA provenance locally</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-2 text-xs text-white/40">
-              <Lock className="w-3.5 h-3.5" />
-              <span>100% local — nothing leaves your browser</span>
-            </div>
-          </div>
+    <div className="app">
+      <a className="skip-link" href="#tool">Skip to image tool</a>
+      <header className="site-header">
+        <div className="container header-inner">
+          <a className="brand" href="#tool" aria-label="Unmade with AI, image tool">
+            <img src="/logo.svg" width="32" height="32" alt="" />
+            <span>Unmade<span className="brand-suffix"> with AI</span></span>
+          </a>
+          <nav className="header-nav" aria-label="Main navigation">
+            <a href="#how-it-works">How it works</a>
+            <a href="#faq">Questions</a>
+          </nav>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-16">
-        {/* Hero */}
-        <div className="text-center mb-14 relative">
-          <div className="pointer-events-none absolute -right-24 -top-10 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-emerald-500/10 to-cyan-400/10 blur-3xl transform rotate-12" />
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white/50 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Supports JPEG · PNG · WebP
+      <main className="container">
+        <div className="workspace-intro">
+          <h1>{H1}</h1>
+          <div className="intro-description">
+            <p>Strip Content Credentials in your browser. Keep every pixel.</p>
+            <span className="local-note"><Lock aria-hidden="true" />100% local. Images stay on your device.</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white mb-4 leading-tight">
-            {H1}
-            <br />
-            <span className="bg-gradient-to-r from-emerald-300 via-cyan-300 to-rose-400 bg-clip-text text-transparent">{H1_ACCENT}</span>
-          </h1>
-          <p className="text-base text-white/50 max-w-xl mx-auto leading-relaxed">
-            Strips C2PA metadata embedded by Gemini, GPT and other AI tools — the metadata
-            platforms like Instagram, X use to label images as "Made with AI."
-          </p>
         </div>
 
-        {/* Answer block — the direct answer search engines and answer engines quote */}
-        <div className="max-w-3xl mx-auto mb-12 rounded-xl border-l-2 border-emerald-400/40 bg-white/[0.03] px-5 py-4">
-          <p className="text-sm text-white/70 leading-relaxed">
-            <strong className="text-white font-semibold">In short:</strong> {SITE.answer}
-          </p>
-        </div>
-
-        {/* ── Tool ──────────────────────────────────────────────────────── */}
-        <section id="tool" aria-labelledby="tool-heading" className="scroll-mt-24">
-          <h2 id="tool-heading" className="sr-only">C2PA metadata remover tool</h2>
+        <section id="tool" aria-labelledby="tool-heading" className="workspace">
+          <h2 id="tool-heading" className="visually-hidden">C2PA metadata remover tool</h2>
+          <div className="workspace-bar">
+            <span className="workspace-title">{hasFiles ? 'Your images' : 'Select your images'}</span>
+            <span className="workspace-caption">{hasFiles ? `${files.length} image${files.length === 1 ? '' : 's'} in this session` : 'JPEG, PNG, WebP'}</span>
+          </div>
           <div
             ref={dropRef}
             onDrop={onDrop}
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onClick={() => !hasFiles && inputRef.current?.click()}
-            className={[
-              'relative rounded-2xl border-2 border-dashed transition-all duration-200 overflow-hidden',
-              dragging
-                ? 'border-white/40 bg-white/[0.05] scale-[1.005]'
-                : hasFiles
-                ? 'border-white/10 bg-white/[0.02]'
-                : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.03] cursor-pointer',
-            ].join(' ')}
+            className={`drop-zone${dragging ? ' is-dragging' : ''}${hasFiles ? ' has-files' : ''}`}
           >
             <input
               ref={inputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               multiple
-              className="hidden"
+              className="visually-hidden"
+              tabIndex={-1}
+              aria-label="Select JPEG, PNG or WebP images"
+              aria-describedby="file-help"
               onChange={e => e.target.files && handleFiles(e.target.files)}
             />
-
             {!hasFiles ? (
-              <div className="py-16 flex flex-col items-center gap-4">
-                <div className={[
-                  'w-20 h-20 rounded-3xl border border-white/10 flex items-center justify-center shadow-lg transition-all duration-200',
-                  dragging ? 'bg-white/10 scale-105' : 'bg-white/[0.03]',
-                ].join(' ')}>
-                  <Upload className={`w-8 h-8 transition-colors ${dragging ? 'text-white' : 'text-white/30'}`} />
-                </div>
-                <div className="text-center">
-                  <p className="text-white/70 font-semibold mb-1">
-                    {dragging ? 'Drop to process' : 'Drag & drop images'}
-                  </p>
-                  <p className="text-sm text-white/30">or click to browse files</p>
-                </div>
-                <div className="text-xs text-white/25 mt-3">Processed locally · No uploads · Preserves pixels</div>
+              <div className="drop-empty">
+                <Upload className="upload-symbol" strokeWidth={1.25} aria-hidden="true" />
+                <p className="drop-title">{dragging ? 'Drop to process' : 'Drop your images here'}</p>
+                <p className="drop-description">Choose one image or a whole batch.</p>
+                <button
+                  type="button"
+                  className="button button-primary"
+                  onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}
+                >
+                  <Plus aria-hidden="true" />Choose images
+                </button>
               </div>
             ) : (
-              <div className="p-4">
+              <div className="results">
                 <FileList files={files} onRemove={removeFile} onDownload={downloadFile} />
-                <div className="mt-4 pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                <div className="results-actions">
                   <button
+                    type="button"
                     onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}
-                    className="flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
+                    className="button button-secondary"
                   >
-                    <Upload className="w-4 h-4" />
-                    Add more images
+                    <Plus aria-hidden="true" />Add more images
                   </button>
                   {files.filter(f => f.status === 'done').length > 1 && (
                     <button
+                      type="button"
                       onClick={e => {
                         e.stopPropagation();
                         files.filter(f => f.status === 'done').forEach(downloadFile);
                       }}
-                      className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+                      className="button button-primary"
                     >
-                      <Download className="w-4 h-4" />
-                      Download all
+                      <Download aria-hidden="true" />Download all
                     </button>
                   )}
                 </div>
               </div>
             )}
           </div>
+          <div className="workspace-foot" id="file-help">
+            <span><Lock aria-hidden="true" />No uploads. No server.</span>
+            <span>Original image quality, preserved</span>
+          </div>
+          <p className="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+            {hasFiles && `${files.filter(f => f.status === 'done' || f.status === 'clean').length} of ${files.length} images processed. ${files.filter(f => f.status === 'error').length} errors.`}
+          </p>
         </section>
 
-        {/* ── How it works ──────────────────────────────────────────────── */}
-        <section aria-labelledby="how-it-works" className="mt-20 scroll-mt-24">
-          <h2 id="how-it-works" className="text-2xl font-bold tracking-tight text-white mb-2">
-            How to remove C2PA metadata
-          </h2>
-          <p className="text-sm text-white/40 mb-6 max-w-2xl leading-relaxed">
-            Three steps. The whole job runs inside your browser tab, so the image is never
-            transferred to a server.
-          </p>
-          <ol className="grid sm:grid-cols-3 gap-4 list-none">
+        <section aria-labelledby="how-it-works" className="how-section">
+          <div className="section-intro">
+            <h2 id="how-it-works">How to remove C2PA metadata</h2>
+            <p>The whole job runs inside your browser tab.</p>
+          </div>
+          <ol className="steps">
             {HOWTO_STEPS.map((step, i) => (
-              <li
-                key={step.name}
-                id={`step-${i + 1}`}
-                className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5 scroll-mt-24"
-              >
-                <div className="flex items-center gap-2.5 mb-4">
-                  <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400/25 to-cyan-300/15 border border-white/10 flex items-center justify-center text-xs font-semibold text-white/80">
-                    {i + 1}
-                  </span>
-                  <h3 className="text-sm font-semibold text-white/80">{step.name}</h3>
-                </div>
-                <p className="text-xs text-white/40 leading-relaxed">{step.text}</p>
+              <li key={step.name} id={`step-${i + 1}`}>
+                <span className="step-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{step.name}</h3>
+                <p>{step.text}</p>
               </li>
             ))}
           </ol>
         </section>
 
-        {/* ── What is C2PA ───────────────────────────────────────────────── */}
-        <section aria-labelledby="what-is-c2pa" className="mt-20 scroll-mt-24">
-          <h2 id="what-is-c2pa" className="text-2xl font-bold tracking-tight text-white mb-3">
-            What is C2PA metadata?
-          </h2>
-          <div className="space-y-3 text-sm text-white/45 leading-relaxed max-w-3xl">
-            {WHAT_IS_C2PA.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
+        <section aria-labelledby="what-is-c2pa" className="reference-section explainer">
+          <div className="reference-heading">
+            <h2 id="what-is-c2pa">What is C2PA metadata?</h2>
+          </div>
+          <div className="reference-body prose">
+            {WHAT_IS_C2PA.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+            <p className="answer-note">{SITE.answer}</p>
           </div>
         </section>
 
-        {/* ── Supported formats ─────────────────────────────────────────── */}
-        <section aria-labelledby="formats" className="mt-20 scroll-mt-24">
-          <h2 id="formats" className="text-2xl font-bold tracking-tight text-white mb-3">
-            Supported formats
-          </h2>
-          <p className="text-sm text-white/40 mb-6 max-w-2xl leading-relaxed">
-            JPEG, PNG and WebP are fully supported. Each container stores C2PA data
-            differently, so the remover targets the right segments for every format.
-          </p>
-          <div className="overflow-x-auto rounded-xl border border-white/[0.06]">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-white/[0.03] text-white/50">
-                  <th scope="col" className="px-4 py-3 font-semibold">Format</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Container</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">What is removed</th>
+        <section aria-labelledby="formats" className="formats-section">
+          <div className="section-intro">
+            <h2 id="formats">Supported formats</h2>
+            <p>Different containers. The same pixel-preserving approach.</p>
+          </div>
+          <table className="formats-table">
+            <thead>
+              <tr>
+                <th scope="col">Format</th>
+                <th scope="col">Container</th>
+                <th scope="col">What is removed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {FORMATS.map(f => (
+                <tr key={f.format}>
+                  <th scope="row">{f.format}</th>
+                  <td data-label="Container">{f.container}</td>
+                  <td data-label="What is removed">{f.removed}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {FORMATS.map((f, i) => (
-                  <tr key={f.format} className={i % 2 ? 'bg-white/[0.01]' : ''}>
-                    <th scope="row" className="px-4 py-3 font-semibold text-white/80 align-top whitespace-nowrap">
-                      {f.format}
-                    </th>
-                    <td className="px-4 py-3 text-white/40 align-top font-mono text-[11px]">
-                      {f.container}
-                    </td>
-                    <td className="px-4 py-3 text-white/40 align-top leading-relaxed">
-                      {f.removed}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </section>
 
-        {/* ── Which tools add it ────────────────────────────────────────── */}
-        <section aria-labelledby="which-tools" className="mt-20 scroll-mt-24">
-          <h2 id="which-tools" className="text-2xl font-bold tracking-tight text-white mb-3">
-            Which AI tools add C2PA metadata?
-          </h2>
-          <p className="text-sm text-white/40 mb-6 max-w-2xl leading-relaxed">
-            Any generator that supports the C2PA standard can embed provenance into its
-            exports. These are the most common sources.
-          </p>
-          <ul className="grid sm:grid-cols-2 gap-3">
+        <section aria-labelledby="which-tools" className="reference-section">
+          <div className="reference-heading">
+            <h2 id="which-tools">Which AI tools add C2PA metadata?</h2>
+            <p>Any generator that supports the standard can embed provenance into its exports.</p>
+          </div>
+          <ul className="tools-list">
             {TOOLS.map(tool => (
-              <li
-                key={tool.name}
-                className="rounded-xl bg-white/[0.03] border border-white/[0.06] px-4 py-3 flex flex-col gap-1"
-              >
-                <h3 className="text-sm font-semibold text-white/80">{tool.name}</h3>
-                <p className="text-xs text-white/40 leading-relaxed m-0">{tool.detail}</p>
+              <li key={tool.name}>
+                <h3>{tool.name}</h3>
+                <p>{tool.detail}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section aria-labelledby="faq" className="mt-20 scroll-mt-24">
-          <h2 id="faq" className="text-2xl font-bold tracking-tight text-white mb-2 flex items-center gap-2.5">
-            <HelpCircle className="w-5 h-5 text-white/30" />
-            Frequently asked questions
-          </h2>
-          <p className="text-sm text-white/40 mb-8 max-w-2xl leading-relaxed">
-            Everything about C2PA removal, privacy and file handling.
-          </p>
-          <dl className="space-y-6 max-w-3xl">
+        <section aria-labelledby="faq" className="reference-section faq-section">
+          <div className="reference-heading">
+            <h2 id="faq">Frequently asked questions</h2>
+            <p>About your images, privacy, and what this tool removes.</p>
+          </div>
+          <div className="faq-list">
             {FAQS.map(faq => (
-              <div key={faq.q} className="border-b border-white/[0.06] pb-6 last:border-0 last:pb-0">
-                <dt className="mb-2">
-                  <h3 className="text-sm font-semibold text-white/80">{faq.q}</h3>
-                </dt>
-                <dd className="text-sm text-white/40 leading-relaxed m-0">{faq.a}</dd>
-              </div>
+              <details className="faq-item" key={faq.q}>
+                <summary>
+                  <h3>{faq.q}</h3>
+                  <ChevronDown aria-hidden="true" />
+                </summary>
+                <p>{faq.a}</p>
+              </details>
             ))}
-          </dl>
+          </div>
         </section>
 
-        {/* Privacy note */}
-        <div className="mt-14 rounded-xl bg-white/[0.02] border border-white/[0.05] p-5 flex gap-4 items-start">
-          <Lock className="w-4 h-4 text-white/30 mt-0.5 shrink-0" />
-          <p className="text-xs text-white/35 leading-relaxed">
+        <div className="privacy-note">
+          <Lock aria-hidden="true" />
+          <p>
             All processing happens entirely in your browser using the Web File API. No image data is
             uploaded to any server. Your files never leave your device.
           </p>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/[0.05] mt-12">
-        <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 text-xs text-white/25">
-          <div className="text-center sm:text-left">
-            <div className="text-white/70">Unmade with AI</div>
-            <div className="text-white/50 text-[11px]">Removes C2PA · Local only · Open image standards</div>
-            <nav aria-label="Footer" className="mt-3 flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 text-[11px]">
-              <a href="#tool" className="text-white/40 hover:text-white/70 transition-colors">Remove metadata</a>
-              <a href="#what-is-c2pa" className="text-white/40 hover:text-white/70 transition-colors">What is C2PA</a>
-              <a href="#formats" className="text-white/40 hover:text-white/70 transition-colors">Formats</a>
-              <a href="#faq" className="text-white/40 hover:text-white/70 transition-colors">FAQ</a>
+      <footer className="site-footer">
+        <div className="container">
+          <div className="footer-top">
+            <div>
+              <p className="footer-brand"><img src="/logo.svg" width="24" height="24" alt="" />Unmade with AI</p>
+              <p>Removes C2PA. Local only. Open image standards.</p>
+            </div>
+            <nav aria-label="Footer" className="footer-nav">
+              <a href="#tool">Remove metadata</a>
+              <a href="#what-is-c2pa">What is C2PA</a>
+              <a href="#formats">Formats</a>
+              <a href="#faq">FAQ</a>
             </nav>
           </div>
-          <div className="text-center sm:text-right">
-            <div className="text-white/30">
-              <a
-                href="https://husnainmazhar.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/70 hover:underline"
-              >
-                Developed by Husnain Mazhar
-              </a>
-            </div>
-            <div className="text-white/50 text-[11px]">Built with care · © {new Date().getFullYear()}</div>
+          <div className="footer-bottom">
+            <a href="https://husnainmazhar.com" target="_blank" rel="noopener noreferrer">Developed by Husnain Mazhar</a>
+            <span>© {new Date().getFullYear()} Unmade with AI</span>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
-// ─── File list ────────────────────────────────────────────────────────────────
 
 function FileList({
   files,
@@ -417,7 +343,7 @@ function FileList({
   onDownload: (f: ProcessedFile) => void;
 }) {
   return (
-    <div className="space-y-2">
+    <div className="file-list">
       {files.map(f => (
         <FileRow key={f.name + f.status} file={f} onRemove={onRemove} onDownload={onDownload} />
       ))}
@@ -438,109 +364,87 @@ function FileRow({
 
   const statusIcon = () => {
     switch (file.status) {
-      case 'processing':
-        return <Spinner />;
-      case 'done':
-        return <CheckCircle2 className="w-4 h-4 text-emerald-400" />;
-      case 'clean':
-        return <CheckCircle2 className="w-4 h-4 text-white/30" />;
-      case 'error':
-        return <XCircle className="w-4 h-4 text-red-400" />;
-      default:
-        return <ImageOff className="w-4 h-4 text-white/30" />;
+      case 'processing': return <Spinner />;
+      case 'done': return <CheckCircle2 aria-hidden="true" />;
+      case 'clean': return <CheckCircle2 aria-hidden="true" />;
+      case 'error': return <XCircle aria-hidden="true" />;
+      default: return <ImageOff aria-hidden="true" />;
     }
   };
 
   const statusLabel = () => {
     switch (file.status) {
-      case 'processing': return <span className="text-white/40">Processing…</span>;
-      case 'done': return <span className="text-emerald-400">{file.result!.removedItems.length} item{file.result!.removedItems.length !== 1 ? 's' : ''} removed</span>;
-      case 'clean': return <span className="text-white/35">No C2PA metadata found</span>;
-      case 'error': return <span className="text-red-400">{file.error}</span>;
+      case 'processing': return 'Processing…';
+      case 'done': return `${file.result!.removedItems.length} item${file.result!.removedItems.length !== 1 ? 's' : ''} removed`;
+      case 'clean': return 'No C2PA metadata found';
+      case 'error': return file.error;
       default: return null;
     }
   };
 
-  const saved = file.result
-    ? file.result.originalSize - file.result.newSize
-    : 0;
+  const saved = file.result ? file.result.originalSize - file.result.newSize : 0;
 
   return (
-    <div className="rounded-xl bg-black/30 border border-white/[0.07] overflow-hidden">
-      <div className="flex items-center gap-3 p-3">
-        {/* Thumbnail */}
-        <div className="w-10 h-10 rounded-lg overflow-hidden bg-white/[0.05] shrink-0 flex items-center justify-center">
-          {file.previewUrl ? (
-            <img src={file.previewUrl} className="w-full h-full object-cover" alt="" />
+    <div className={`file-row status-${file.status}`}>
+      <div className="file-main">
+        <div className="file-thumbnail">
+          {file.previewUrl && file.status !== 'error' ? (
+            <img src={file.previewUrl} width="48" height="48" alt="" />
           ) : (
-            <FileImage className="w-5 h-5 text-white/20" />
+            <FileImage aria-hidden="true" />
           )}
         </div>
-
-        {/* Info */}
-        <div className="flex-1 min-w-0">
-          <p className="text-sm text-white/80 truncate font-medium">{file.name}</p>
-          <div className="flex items-center gap-2 mt-0.5 text-xs">
-            {statusLabel()}
-            {file.result && (
-              <>
-                <span className="text-white/20">·</span>
-                <span className="text-white/25">
-                  {formatBytes(file.result.originalSize)} → {formatBytes(file.result.newSize)}
-                  {saved > 0 && ` (−${formatBytes(saved)})`}
-                </span>
-              </>
-            )}
-          </div>
+        <div className="file-info">
+          <p className="file-name" title={file.name}>{file.name}</p>
+          <p className="file-status">{statusIcon()}{statusLabel()}</p>
         </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-1 shrink-0">
-          {statusIcon()}
-
+        {file.result && (
+          <div className="file-sizes">
+            <span><span className="size-label">Original</span>{formatBytes(file.result.originalSize)}</span>
+            <span><span className="size-label">Processed</span>{formatBytes(file.result.newSize)}</span>
+            {saved > 0 && <span className="size-saved">{formatBytes(saved)} smaller</span>}
+          </div>
+        )}
+        <div className="file-actions">
           {(file.status === 'done' || file.status === 'clean') && file.result && file.result.removedItems.length > 0 && (
             <button
+              type="button"
               onClick={() => setExpanded(x => !x)}
-              className="ml-1 w-7 h-7 rounded-lg flex items-center justify-center text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
+              className="icon-button details-button"
               aria-label="Show removed items"
               aria-expanded={expanded}
             >
-              <ChevronRight className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+              <ChevronRight className={expanded ? 'is-expanded' : ''} aria-hidden="true" />
             </button>
           )}
-
           {file.status === 'done' && (
             <button
+              type="button"
               onClick={() => onDownload(file)}
-              className="ml-1 w-7 h-7 rounded-lg flex items-center justify-center text-white/50 hover:text-white hover:bg-white/[0.08] transition-all"
+              className="button button-secondary file-download"
               title="Download cleaned image"
               aria-label={`Download cleaned version of ${file.name}`}
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download aria-hidden="true" /><span>Download</span>
             </button>
           )}
-
           <button
+            type="button"
             onClick={() => onRemove(file.name)}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-white/20 hover:text-red-400/70 hover:bg-red-500/10 transition-all"
+            className="icon-button remove-button"
             title="Remove"
             aria-label={`Remove ${file.name} from the list`}
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 aria-hidden="true" />
           </button>
         </div>
       </div>
-
-      {/* Expanded removed items */}
       {expanded && file.result && file.result.removedItems.length > 0 && (
-        <div className="border-t border-white/[0.06] px-4 py-3">
-          <p className="text-xs text-white/30 mb-2 font-medium uppercase tracking-wider">Removed</p>
-          <ul className="space-y-1.5">
+        <div className="removed-details">
+          <p>Removed metadata</p>
+          <ul>
             {file.result.removedItems.map((item, i) => (
-              <li key={i} className="flex items-center gap-2 text-xs text-white/50">
-                <AlertCircle className="w-3 h-3 text-amber-400/60 shrink-0" />
-                {item}
-              </li>
+              <li key={i}><AlertCircle aria-hidden="true" />{item}</li>
             ))}
           </ul>
         </div>
@@ -551,9 +455,9 @@ function FileRow({
 
 function Spinner() {
   return (
-    <svg className="w-4 h-4 animate-spin text-white/30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    <svg className="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle className="spinner-track" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+      <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
     </svg>
   );
 }
