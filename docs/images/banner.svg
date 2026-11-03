@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title description">
+  <title id="title">Unmade with AI</title>
+  <desc id="description">Remove C2PA metadata. Keep every pixel. A monochrome U mark with one detached segment on a warm dark background.</desc>
+  <style>
+    /* Hallmark · component: repository banner · genre: modern-minimal · theme: Rim · v2.0.0 */
+    :root {
+      --color-paper: oklch(14.5% 0.008 75);
+      --color-ink: oklch(94% 0.010 80);
+      --color-muted: oklch(68% 0.012 80);
+      --color-rule: oklch(31% 0.010 78);
+      --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .paper { fill: var(--color-paper); }
+    .ink { fill: var(--color-ink); }
+    .rule { stroke: var(--color-rule); }
+    text { font-family: var(--font-display); }
+    .name { fill: var(--color-ink); font-size: 64px; font-weight: 500; letter-spacing: -2px; }
+    .tagline { fill: var(--color-muted); font-size: 25px; }
+    .formats { fill: var(--color-muted); font-size: 18px; }
+  </style>
+  <rect class="paper" width="1200" height="360" />
+  <text class="name" x="64" y="143">Unmade with AI</text>
+  <text class="tagline" x="66" y="196">Remove C2PA metadata. Keep every pixel.</text>
+  <line class="rule" x1="64" y1="261" x2="776" y2="261" />
+  <text class="formats" x="66" y="302">JPEG, PNG, WebP. Processed in your browser.</text>
+  <g class="ink" transform="translate(852 48) scale(8)">
+    <path d="M4 4h6v18h12v-8h6v14H4Z" />
+    <path d="M22 4h6v6h-6Z" />
+  </g>
+</svg>
